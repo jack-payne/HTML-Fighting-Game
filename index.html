@@ -1,0 +1,41 @@
+<!DOCTYPE html><!--display flex makes div be next to each other by default -->
+<html lang="en">
+  <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+      *{
+        box-sizing: border-box;
+        font-family: 'Press Start 2P', cursive;
+      }
+    </style><!--This above makes padding get ignored when calculating the width of  -->
+  </head>
+<body>
+    <!--This is the canvas/ red container div( or should be butits the entire page)-->
+    <div style = "position: relative; display: inline-block"><!--with out inline-block, the default display 'block 'so full screen, inlinne mean its will only take us space of children inside it -->
+        <!--The entire healthbar.timer interface, 100% of the canvas, small red container div -->
+        <div style = "position: absolute; display: flex; width: 100%; align-items: center; padding: 20px"><!--align-items needs a dispaly flex, here its centering children vertically -->
+            <!--player health -->                                                   <!--display: flex; justify-content: flex-end; all elements aligned to the right -->
+            <div style = "position: relative; width: 100%; display: flex; justify-content: flex-end; border-top: 4px solid white; border-bottom: 4px solid white; border-left: 4px solid white;"><!--Player health bar -->
+              <div style = "background-color: red; height: 30px; width: 100%"></div><!--Yellow Background -->
+              <div id="playerHealth" style ="position: absolute; background: #818CF8; top: 0; right: 0; bottom: 0; width: 100%"></div> <!--Saying blue background will cover all corners of the bar -->
+              </div>
+            <!--Timer -->                                                                     <!--This part brings the timer down, then center to the middle instead of the side -->
+          <div id="timer" style = "background-color: black; width: 100px; height: 50px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: white; border: 4px solid white;"> </div><!--flex-shrink: 0 means dont shrink -->
+            <!--Enemy health -->
+          <div style = "position: relative; width: 100%;  border-top: 4px solid white; border-bottom: 4px solid white; border-right: 4px solid white;">
+          <div style = "background-color: red; height: 30px; width: 100%"></div>
+          <div id="enemyHealth" style ="position: absolute; background: #818CF8; top: 0; right: 0; bottom: 0; left: 0;"></div> <!--Saying blue background will cover all corners of the bar -->
+          </div>
+          <div></div>
+        </div>
+        <div id ="displayText" style="position: absolute; color: white; display: none; align-items: center; justify-content: center; top: 0; right:0; bottom: 0; Left:0;">Tie</div>
+        <canvas></canvas>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src = "utils.js"></script> <!--This one needs to come before index because index uses it to create players -->
+    <script src = "classes.js"></script>
+    <script src = "index.js"></script>
+</body>
+</html>
