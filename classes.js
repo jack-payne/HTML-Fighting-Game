@@ -26,6 +26,7 @@ draw(){
         this.position.y - this.imageOffset.y,//y position of image
         (this.image.width / this.framesMax) * this.scale,//width of image
          this.image.height * this.scale )//height of image
+         
         
 
     }
@@ -44,6 +45,7 @@ animateFrames(){
 update(){// UPDATES FOR STATIC SPRITES
     this.draw()
     this.animateFrames()
+    
 }
 }//player uses the class Sprite with an object as a parameter
 
@@ -103,12 +105,7 @@ class Fighter extends Sprite{
     //     // attack box
     //     if (this.isAttacking) {
     //       c.fillStyle = 'green'
-    //       c.fillRect(
-    //         this.attackBox.position.x,
-    //         this.attackBox.position.y,
-    //         this.attackBox.width,
-    //         this.attackBox.height
-    //       )
+    //       c.fillRect(this.attackBox_air.position.x,this.attackBox_air.position.y, this.attackBox_air.width, this.attackBox_air.height)
     //     }
     // }
 update(){// this updates movement and stops you from falling on the ground, UPDATE FOR PLAYER SPRITES
@@ -120,7 +117,7 @@ update(){// this updates movement and stops you from falling on the ground, UPDA
     // update air attack box movement
     this.attackBox_air.position.x = this.position.x + this.attackBox_air.offset.x//updates the basic attack box to move with you
     this.attackBox_air.position.y = this.position.y + this.attackBox_air.offset.y
-    //c.fillRect(this.attackBox_air.position.x,this.attackBox_air.position.y, this.attackBox_air.width, this.attackBox_air.height)
+    // c.fillRect(this.attackBox_air.position.x,this.attackBox_air.position.y, this.attackBox_air.width, this.attackBox_air.height)
     this.position.x += this.velocity.x
     this.position.y += this.velocity.y
     //gravity function
@@ -132,9 +129,12 @@ update(){// this updates movement and stops you from falling on the ground, UPDA
             this.velocity.y += gravity // velocity at 0 would get low enough to where it wouldnt pass the if statement and have gravity, so negative velocity gets you the fall animation
         }
     }
-player_attack1(){//BASIC ATTACK AND AIR ATTACK ARE THE SAME COMMAND
-    if(player.velocity.y != 0){
+player_attack(){//BASIC ATTACK AND AIR ATTACK ARE THE SAME COMMAND
+    if(player.velocity.y != 0 && player.position.x <= enemy.position.x ){
         player.switchSprite('air_attack_left')
+    }
+    else if(player.velocity.y != 0 && player.position.x > enemy.position.x){
+        player.switchSprite('air_attack_right')
     }
     
     if(player.position.x >= enemy.position.x){
@@ -148,6 +148,13 @@ player_attack1(){//BASIC ATTACK AND AIR ATTACK ARE THE SAME COMMAND
     // 100 milleseconds
 }
 enemy_attack(){
+    if(enemy.velocity.y != 0 && enemy.position.x <= player.position.x){
+        enemy.switchSprite('air_attack_left')
+    }
+    else if(enemy.velocity.y != 0 && enemy.position.x > player.position.x){
+        enemy.switchSprite('air_attack_right')
+
+    }
     if(player.position.x <= enemy.position.x){
         enemy.switchSprite('attack1_right')
         
@@ -163,11 +170,13 @@ takeHit(){
         this.switchSprite('death')
     }
     else{
-        if(player.position.x >= enemy.position.x){
+        if(player.position.x >= enemy.position.x){// create knockback here
             this.switchSprite('takeHit_right')
+            
             }
             else{
                 this.switchSprite('takeHit_left')
+                
             }
     }
 }
@@ -179,9 +188,11 @@ takeHit_enemy(){
     else{
         if(player.position.x <= enemy.position.x){
         this.switchSprite('takeHit_left')
+       
         }
         else{
             this.switchSprite('takeHit_right')
+            
         }
     }
 }

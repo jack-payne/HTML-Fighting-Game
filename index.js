@@ -177,11 +177,11 @@ const enemy = new Fighter({//position is an object because it takes two paramete
     },
     attackBox_air: {
         offset:{
-            x:-70,
-            y:0
+            x:-80,
+            y:-60
         },
-        width: 80,
-        height: 50
+        width: 250,
+        height: 130
     },
     sprites: {
         idle_right: {
@@ -234,12 +234,12 @@ const enemy = new Fighter({//position is an object because it takes two paramete
             
         },
         air_attack_right: {
-            imageSrc: './img/Player1/earth_air_attack_left.png',
+            imageSrc: './img/Player2/earth_air_attack_right.png',
             framesMax: 7
             
         },
         air_attack_left: {
-            imageSrc: './img/Player1/earth_air_attack_left.png',
+            imageSrc: './img/Player2/earth_air_attack_left.png',
             framesMax: 7
             
         },
@@ -412,13 +412,11 @@ function animation(){
             width: enemy.health + '%'
         })
         
-    
-
     }//if player misses
     //Detect Collision for player and enemy hit
     if(airRecCollision({
         rectangle1: player,
-        rectangle2 : enemy}) && player.isAttacking && player.framesCurrent === 4 && player.velocity.y != 0){
+        rectangle2 : enemy}) && player.isAttacking && player.framesCurrent === 1 && player.velocity.y != 0){
             enemy.takeHit_enemy()
         player.isAttacking = false// so you only hit one and don't continuously keep hiting with one attack
         
@@ -427,10 +425,11 @@ function animation(){
             width: enemy.health + '%'
         })
         }
+        if(player.isAttacking && player.framesCurrent === 1){// so you don't walk into the enemy after attacking an hit them
+            player.isAttacking = false
+        }
      //if player misses
-     if(player.isAttacking && player.framesCurrent === 1){// so you don't walk into the enemy after attacking an hit them
-        player.isAttacking = false
-    }//Detect Collision for Enemy and player hit
+     //Detect Collision for Enemy and player hit
     if(recCollision({
         rectangle1: enemy,
         rectangle2 : player}) && enemy.isAttacking && enemy.framesCurrent === 1 && enemy.velocity.y === 0){
@@ -441,6 +440,18 @@ function animation(){
             gsap.to('#playerHealth', {
                 width: player.health + '%'
             })
+    }
+    if(airRecCollision({
+        rectangle1: enemy,
+        rectangle2 : player}) && enemy.isAttacking && enemy.framesCurrent === 1 && enemy.velocity.y != 0){
+        player.takeHit()
+        enemy.isAttacking = false// so you only hit one and don't continuously keep hiting with one attack
+        
+        //document.querySelector('#playerHealth').style.width = player.health + '%'
+            gsap.to('#playerHealth', {
+                width: player.health + '%'
+            })
+            
     }// if enemy misses they are no longer attacking
     if(enemy.isAttacking && enemy.framesCurrent === 1){
         enemy.isAttacking = false
@@ -449,11 +460,15 @@ function animation(){
     if(player.position.x >= enemy.position.x){
         player.attackBox.offset.x = -65
         enemy.attackBox.offset.x = 70
+        player.attackBox_air.offset.x = -110
+        enemy.attackBox_air.offset.x = -80
         
     }
     else{
         player.attackBox.offset.x = 70
         enemy.attackBox.offset.x = -70
+        player.attackBox_air.offset.x = 100
+        enemy.attackBox_air.offset.x = -80
     }
     
     //End Game Based on Health
@@ -468,6 +483,8 @@ animation()
 //PART 3 Adding Event Listeners
 let playerJumps = 0; // Jump count for the player
 let enemyJumps = 0; // Jump count for the enemy
+let isSpaceBarPressed = false;
+let isArrowDownPressed = false;
 window.addEventListener('keydown', (event) => {// input that triggers an event
     if(!player.dead){// stop moving after dead
 
@@ -496,8 +513,11 @@ window.addEventListener('keydown', (event) => {// input that triggers an event
         }
         break
         case ' ':
-        player.player_attack1()
-        break
+        if (!isSpaceBarPressed) {
+            player.player_attack();
+            isSpaceBarPressed = true;
+        }
+        break;
         
     }
     }
@@ -527,12 +547,21 @@ window.addEventListener('keydown', (event) => {// input that triggers an event
             }
         break
         case 'ArrowDown':
-        enemy.enemy_attack()
+        if(!isArrowDownPressed) {
+            enemy.enemy_attack()
+            isArrowDownPressed = true;
+            }
         break
     }
 }
 })
 window.addEventListener('keyup', (event) => {// release key means stop moving
+    if(event.key === ' ') {
+        isSpaceBarPressed = false;
+    }
+    if(event.key === 'ArrowDown') {
+        isArrowDownPressed = false;
+    }
     switch(event.key){
         case 'd':
         keys.d.pressed = false
