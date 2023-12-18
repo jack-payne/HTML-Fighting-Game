@@ -34,7 +34,7 @@ const ground_0 = new Sprite({
 })
 const player = new Fighter({//position is an object because it takes two parameters, and x and y value, now wrap twice because posotion is wrapped with velocity
     position:{
-    x:0,
+    x:256,
     y:100 // this is how you declare variables in an object
     },
     velocity :{
