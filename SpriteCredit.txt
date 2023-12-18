@@ -5,3 +5,4 @@ Player 1 Sprites: https://chierit.itch.io/elementals-wind-hashashin
 Player 2 Sprites: https://chierit.itch.io/elementals-ground-monk
 Background Sprites: https://blank-canvas.itch.io/parallax-pixel-art-background-desert
 House and ground Sprites: https://brullov.itch.io/oak-woods
+Online Link to game: https://regal-kashata-65a307.netlify.app/
